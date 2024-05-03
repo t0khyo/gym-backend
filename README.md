@@ -1,2 +1,2 @@
 # gym-backend
-Advanced software engineering collage project
+Advanced Software Engineering Project
