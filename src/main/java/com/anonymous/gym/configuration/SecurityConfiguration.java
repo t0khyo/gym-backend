@@ -30,12 +30,16 @@ public class SecurityConfiguration {
 
     private final LogoutHandler logoutHandler;
 
+    @Bean
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> {
-                            request.requestMatchers("/api/v1/auth/**","api/v1/contact/**","api/v1/work/**")
+                            request.requestMatchers("/api/v1/auth/**", "api/v1/contact/**", "api/v1/work/**", "/swagger-ui/**")
                                     .permitAll()
                                     .requestMatchers("api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
                                     .anyRequest().authenticated();
@@ -47,32 +51,25 @@ public class SecurityConfiguration {
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthenticationFilter , UsernamePasswordAuthenticationFilter.class
-                )
-                .logout()
-                .logoutUrl("/api/v1/auth/logout")
-                .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler(
-                        (request, response, authentication) ->
-                                SecurityContextHolder.clearContext()
+                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
                 )
 
+                .logout(logout -> {
+                    logout.logoutUrl("/api/v1/auth/logout");
+                    logout.addLogoutHandler(logoutHandler);
+                    logout.logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()));
+                })
         ;
         return http.build();
 
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userService.userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
-    }
-
-    @Bean
-    public static  PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
