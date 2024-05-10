@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Token {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     private String token;
@@ -27,7 +27,7 @@ public class Token {
     private boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name="user_id")
     private User user;
 }
 
