@@ -20,7 +20,7 @@ public class WorkoutPlan extends BaseEntity {
     @OneToOne
     private User user;
 
-    private String name;
+    private String description;
 
     @ManyToMany(fetch=FetchType.EAGER)
     @ToString.Exclude

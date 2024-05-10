@@ -21,6 +21,8 @@ public class DietPlan extends BaseEntity {
 
     private String description;
 
+    private int dailyCalories;
+
     @ManyToMany(fetch=FetchType.EAGER)
     @ToString.Exclude
     private List<Meal> meals;
