@@ -1,5 +1,7 @@
 package com.anonymous.gym.model.DTO;
 
+import com.anonymous.gym.model.entity.enums.ExerciseType;
+import com.anonymous.gym.model.entity.enums.Muscle;
 import lombok.Builder;
 
 import java.util.UUID;
@@ -8,8 +10,15 @@ import java.util.UUID;
 public record ExerciseResponse(
         UUID id,
         String name,
-        String description,
-        int reps,
+
+        ExerciseType type,
+
+        String equipment,
+
+        Muscle muscle,
+
+        String instructions,
+
         String gifUrl
 ) {
 }
