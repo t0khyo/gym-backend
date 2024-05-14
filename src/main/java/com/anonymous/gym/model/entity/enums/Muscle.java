@@ -7,6 +7,7 @@ public enum Muscle {
     biceps,
     calves,
     chest,
+    shoulders,
     forearms,
     glutes,
     hamstrings,

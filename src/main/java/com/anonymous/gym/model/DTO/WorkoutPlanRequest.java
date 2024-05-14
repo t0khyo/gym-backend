@@ -4,10 +4,9 @@ import com.anonymous.gym.model.entity.enums.ExerciseDifficulty;
 import lombok.Builder;
 
 import java.util.List;
-import java.util.UUID;
 
 @Builder
-public record WorkoutPlanResponse(
+public record WorkoutPlanRequest(
         String description,
         ExerciseDifficulty difficulty,
         List<ExerciseResponse> exercises

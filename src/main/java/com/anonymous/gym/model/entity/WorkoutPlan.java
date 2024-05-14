@@ -1,12 +1,11 @@
 package com.anonymous.gym.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import com.anonymous.gym.model.entity.enums.ExerciseDifficulty;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Getter
@@ -16,13 +15,17 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutPlan extends BaseEntity {
-    @OneToOne
-    private User user;
+public class WorkoutPlan{
+    @Id
+    @GeneratedValue(strategy=GenerationType.UUID)
+    private UUID id;
 
     private String description;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private ExerciseDifficulty difficulty;
+
+    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Exercise> exercises;
 }

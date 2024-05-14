@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 public interface TokenRepository extends JpaRepository<Token,Integer> {
 
@@ -14,7 +16,7 @@ public interface TokenRepository extends JpaRepository<Token,Integer> {
             select t from Token t inner join User u on t.user.id = u.id
             where u.id =:userId and (t.expired =false or t.revoked=false)
             """)
-    List<Token> findAllValidTokensByUser(Long userId);
+    List<Token> findAllValidTokensByUser(UUID userId);
 
     Optional<Token> findByToken(String token);
 

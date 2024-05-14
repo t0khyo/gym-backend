@@ -1,7 +1,8 @@
 package com.anonymous.gym.model.entity;
 
-import com.anonymous.gym.model.entity.enums.DietGoal;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,11 +20,20 @@ public class UserProfile {
 
     private String lastName;
 
-    private DietGoal goal;
-
     private LocalDate dob;
 
-    private int weight;
+    private float weight;
 
     private int height;
+
+    private float bmi;
+
+    @ManyToOne
+    @JoinColumn(name="workout_plan_id")
+    private WorkoutPlan workoutPlan;
+
+
+    @ManyToOne
+    @JoinColumn(name="diet_plan_id")
+    private DietPlan dietPlan;
 }

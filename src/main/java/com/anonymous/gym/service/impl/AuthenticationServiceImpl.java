@@ -6,6 +6,7 @@ import com.anonymous.gym.model.DTO.SignInRequest;
 import com.anonymous.gym.model.DTO.SignUpRequest;
 import com.anonymous.gym.model.entity.Token;
 import com.anonymous.gym.model.entity.User;
+import com.anonymous.gym.model.entity.UserProfile;
 import com.anonymous.gym.model.entity.enums.TokenType;
 import com.anonymous.gym.repository.TokenRepository;
 import com.anonymous.gym.repository.UserRepository;
@@ -35,8 +36,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public JwtAuthenticationResponse signup(SignUpRequest signUpRequest){
         User user = new User();
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setLastName(signUpRequest.getLastName());
+        user.setUserProfile(new UserProfile());
+        user.getUserProfile().setFirstName(signUpRequest.getFirstName());
+        user.getUserProfile().setLastName(signUpRequest.getLastName());
         user.setEmail(signUpRequest.getEmail());
         user.setRole(signUpRequest.getRole());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
