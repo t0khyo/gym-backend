@@ -3,6 +3,7 @@ package com.anonymous.gym.service.impl;
 import com.anonymous.gym.mapper.DietPlanMapper;
 import com.anonymous.gym.model.DTO.DietPlanResponse;
 import com.anonymous.gym.model.entity.DietPlan;
+import com.anonymous.gym.model.entity.DietPlanType;
 import com.anonymous.gym.model.entity.Meal;
 import com.anonymous.gym.model.entity.User;
 import com.anonymous.gym.repository.DietPlanRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -30,50 +32,25 @@ public class DietPlanServiceImpl implements DietPlanService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
-        int dailyCalories = calculateDailyCalories(user);
+        DietPlanType dietPlanType;
+        if (bmi < 18) {
+            dietPlanType = DietPlanType.underweight;
+        } else if (bmi > 18 && bmi < 25) {
+            dietPlanType = DietPlanType.healthy_weight;
+        } else {
+            dietPlanType = DietPlanType.overweight;
+        }
+        Optional<DietPlan> dietPlan = dietPlanRepository.findByType(dietPlanType);
 
-        List<Meal> meals = generateSampleMealPlan(dailyCalories);
-
-        DietPlan dietPlan = DietPlan.builder()
-                .user(user)
-                .dailyCalories(dailyCalories)
-                .meals(meals)
-                .build();
-
-        dietPlanRepository.save(dietPlan);
-
-        return dietPlanMapper.toDto(dietPlan);
-    }
-
-    private int calculateDailyCalories(User user) {
-        int age = LocalDate.now().getYear() - user.getUserProfile().getDob().getYear();
-        float weight = user.getUserProfile().getWeight();
-
-        float bmr = 10
-                * user.getUserProfile().getWeight()
-                + 6.25f
-                * weight
-                - 5
-                * age;
-
-        float activityFactor = 1.2f;
-
-//        if (user.getUserProfile().getGoal() == DietGoal.LOSE_WEIGHT) {
-//            activityFactor *= 0.8f;     // Reduce slightly for weight loss
-//        } else if (user.getUserProfile().getGoal() == DietGoal.GAIN_MUSCLE) {
-//            activityFactor *= 1.3f;     // Increase slightly for muscle gain
-//        }
-
-        return Math.round(bmr * activityFactor);
-    }
-
-    private float calculateBMI(float weightInKg, int heightInMeters) {
-        if (heightInMeters <= 0) {
-            throw new IllegalArgumentException("Height cannot be zero or negative");
+        if (dietPlan.isPresent()) {
+            user.getUserProfile().setDietPlan(dietPlan.get());
+            return dietPlanMapper.toDto(dietPlan.get());
         }
 
-        return weightInKg / (heightInMeters * heightInMeters);
+        return null;
     }
+
+
 
     @Override
     public DietPlanResponse getUserDietPlan(UUID userId) {
