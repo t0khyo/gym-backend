@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/users")
+@RequestMapping("/api/v1/users")
 @RestController
 public class UserController {
     private final DietPlanService dietPlanService;
     private final WorkoutPlanService workoutPlanService;
 
-    @PostMapping("/{userId}/diet")
+    @PostMapping("/diet")
     public ResponseEntity<DietPlanResponse> generateUserDietPlan(
             @RequestParam float bmi
     ) {
@@ -31,7 +31,7 @@ public class UserController {
         return ResponseEntity.ok(dietPlanService.generateDietPlan(userId, bmi));
     }
 
-    @GetMapping("/{userId}/diet")
+    @GetMapping("/diet")
     public ResponseEntity<DietPlanResponse> getUserDietPlan() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = ((User)authentication.getPrincipal()).getId();
@@ -39,7 +39,7 @@ public class UserController {
         return ResponseEntity.ok(dietPlanService.getUserDietPlan(userId));
     }
 
-    @PostMapping("/{userId}/workout")
+    @PostMapping("/workout")
     public ResponseEntity<WorkoutPlanResponse> generateWorkoutPlan(
             @RequestParam ExerciseDifficulty difficulty
     ) {
@@ -49,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok(workoutPlanService.generateWorkoutPlan(userId, difficulty));
     }
 
-    @GetMapping("/{userId}/workout")
+    @GetMapping("/workout")
     public ResponseEntity<WorkoutPlanResponse> getUserWorkoutPlan() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = ((User)authentication.getPrincipal()).getId();

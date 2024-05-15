@@ -1,6 +1,7 @@
 package com.anonymous.gym.service.impl;
 
 import com.anonymous.gym.mapper.WorkoutPlanMapper;
+import com.anonymous.gym.model.DTO.WorkoutPlanRequest;
 import com.anonymous.gym.model.DTO.WorkoutPlanResponse;
 import com.anonymous.gym.model.entity.User;
 import com.anonymous.gym.model.entity.WorkoutPlan;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -56,5 +58,31 @@ public class WorkoutPlanServiceImpl implements WorkoutPlanService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
         return workoutPlanMapper.toDto(user.getUserProfile().getWorkoutPlan());
+    }
+
+    public List<WorkoutPlanResponse> getAll() {
+        return workoutPlanRepository.findAll().stream()
+                .collect(Collectors.toList(WorkoutPlanMapper::toDto));
+    }
+
+
+    @Override
+    public WorkoutPlanResponse getById(UUID id) {
+        return null;
+    }
+
+    @Override
+    public WorkoutPlanResponse create(WorkoutPlanRequest entity) {
+        return null;
+    }
+
+    @Override
+    public WorkoutPlanResponse update(WorkoutPlanRequest entity) {
+        return null;
+    }
+
+    @Override
+    public void delete(UUID id) {
+
     }
 }

@@ -7,7 +7,7 @@ import com.anonymous.gym.model.entity.enums.ExerciseDifficulty;
 
 import java.util.UUID;
 
-public interface WorkoutPlanService {
+public interface WorkoutPlanService extends BaseService<WorkoutPlanResponse ,WorkoutPlanRequest> {
     WorkoutPlanResponse generateWorkoutPlan(UUID userId, ExerciseDifficulty difficulty);
     WorkoutPlanResponse getUserWorkoutPlan(UUID userId);
 
