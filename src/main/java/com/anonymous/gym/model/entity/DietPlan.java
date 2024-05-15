@@ -16,9 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DietPlan extends BaseEntity {
-    @OneToOne
-    private User user;
-
     private String description;
 
     private int dailyCalories;
