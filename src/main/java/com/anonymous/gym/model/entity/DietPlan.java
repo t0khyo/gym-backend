@@ -1,9 +1,6 @@
 package com.anonymous.gym.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
@@ -22,7 +19,7 @@ public class DietPlan extends BaseEntity {
 
     private DietPlanType type;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
     @ToString.Exclude
     private List<Meal> meals;
 }

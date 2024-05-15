@@ -8,6 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface DietPlanRepository extends JpaRepository<DietPlan, UUID> {
-    Optional<DietPlan> findByUserId(UUID userId);
     Optional<DietPlan> findByType(DietPlanType dietPlanType);
 }

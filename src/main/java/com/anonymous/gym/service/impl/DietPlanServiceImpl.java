@@ -54,10 +54,8 @@ public class DietPlanServiceImpl implements DietPlanService {
 
     @Override
     public DietPlanResponse getUserDietPlan(UUID userId) {
-        DietPlan dietPlan = dietPlanRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Diet plan not found for user with id: " + userId));
 
-        return dietPlanMapper.toDto(dietPlan);
+        return dietPlanMapper.toDto(null);
     }
 
     private List<Meal> generateSampleMealPlan(float dailyCalories) {

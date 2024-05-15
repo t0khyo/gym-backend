@@ -3,6 +3,7 @@ package com.anonymous.gym.helper;
 import com.anonymous.gym.model.entity.*;
 import com.anonymous.gym.model.entity.enums.ExerciseDifficulty;
 import com.anonymous.gym.model.entity.enums.MealType;
+import com.anonymous.gym.repository.DietPlanRepository;
 import com.anonymous.gym.repository.ExerciseRepository;
 import com.anonymous.gym.repository.MealRepository;
 import com.anonymous.gym.repository.WorkoutPlanRepository;
@@ -23,6 +24,9 @@ public class DataLoader {
     private final MealRepository mealRepository;
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseRepository exerciseRepository;
+
+    private final DietPlanRepository dietPlanRepository;
+
     private List<Exercise> beginnersExercises;
     private List<Exercise> intermediateExercises;
     private List<Exercise> expertExercises;
@@ -46,6 +50,7 @@ public class DataLoader {
         loadExercisesFromJsonFile();
         expertExercises.forEach(System.out::println);
         loadWorkoutPlans();
+        loadDietPlans();
     }
 
 
@@ -71,7 +76,7 @@ public class DataLoader {
         workoutPlanRepository.saveAll(workoutPlans);
     }
 
-    private void loadMeals() {
+    private void loadDietPlans() {
 
         List<Meal> healthy_weight = List.of(
                 Meal.builder()
@@ -166,7 +171,7 @@ public class DataLoader {
                 .dailyCalories(2500)
                 .build();
 
-
+        dietPlanRepository.saveAll(List.of(bulkingPlan, healthyPlan, underweightPlan));
 
     }
 }
